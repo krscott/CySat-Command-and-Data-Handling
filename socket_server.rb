@@ -15,6 +15,11 @@ class SocketConnection
   def sprint(str)
     socket.print str.to_s unless socket.closed? or @closed
   end
+
+  def server_puts(str)
+    puts "[#{timestamp}] #{str}"
+  end
+
   def closed?()
     socket.closed? or @closed
   end
@@ -23,7 +28,6 @@ class SocketConnection
     @closed = true
     on_close()
   end
-  
   
   def to_s()
     "#{addr}"
@@ -44,6 +48,7 @@ class SocketConnection
     rescue Errno::EPIPE => e
       close
     rescue Exception => e
+      server_puts "Rescued Exception."
       puts "#{e} (#{e.class})"
       puts e.backtrace.map{|x| "  #{x}"}
     end
@@ -52,6 +57,10 @@ class SocketConnection
   
   private
   
+  def timestamp()
+    Time.now.localtime.to_s.gsub(/ -.*$/,'')
+  end
+
   def input_not_recognized(s)
     sputs "I don't understand '#{s}'"
   end
@@ -59,7 +68,7 @@ class SocketConnection
   ### Events
   
   def on_connect()
-    puts "Connection from: #{addr}"
+    server_puts "Connection from: #{addr}"
     sputs "Connection established #{Time.now.ctime}"
   end
   
@@ -76,7 +85,7 @@ class SocketConnection
   
   def on_close()
     sputs "Goodbye!"
-    puts "#{addr} disconnected."
+    server_puts "#{addr} disconnected."
   end
 end
 

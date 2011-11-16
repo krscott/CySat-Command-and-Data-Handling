@@ -97,10 +97,11 @@ class Microprocessor < PseudoCodeScript
   def footprint_elapsed
     if @footprint_elapsed or (@footprint_elapsed_during_transmission and @transmitting)
       pretend "Payload footprint distance has been traveled.", 0
+      return true
     else
       pretend "Payload footprint distance has not yet been traveled.", 0
+      return false
     end
-    return @footprint_elapsed
   end
   
   def turn_on_radiometer(i)
