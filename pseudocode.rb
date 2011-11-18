@@ -31,7 +31,7 @@ class PseudoCodeScript
     end
   end
   
-  attr_accessor :pretend_delay, :pretend_output
+  attr_accessor :pretend_delay, :pretend_output, :pretend_no_delay
   
   def initialize()
     super
@@ -66,15 +66,14 @@ class PseudoCodeScript
     
     if delay > 0
       (delay*2).times do
-        sleep 0.5
+        sleep 0.5 if !@pretend_no_delay
         out_print "." if @pretend_output
       end
-      #out_puts "Done."
-      out_puts "" if @pretend_output
+      #out_print "Done."
     else
-      sleep 0.5
-      out_puts "" if @pretend_output
+      sleep 0.5 if !@pretend_no_delay
     end
+    out_puts "" if @pretend_output
   end
   
   def call(m)

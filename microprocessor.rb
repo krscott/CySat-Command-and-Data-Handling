@@ -56,6 +56,8 @@ class Microprocessor < PseudoCodeScript
     out_puts "Running Command and Data Handling pseudo code script"
     out_puts "Written by Kristoffer Scott"
     out_puts "2011 ISU Cysat Team"
+    out_puts ""
+    out_puts "Press ENTER to dump all text and exit."
     pretend "", 3
     out_puts ""
   end
@@ -97,6 +99,7 @@ class Microprocessor < PseudoCodeScript
   def footprint_elapsed
     if @footprint_elapsed or (@footprint_elapsed_during_transmission and @transmitting)
       pretend "Payload footprint distance has been traveled.", 0
+      @footprint_elapsed_during_transmission = false
       return true
     else
       pretend "Payload footprint distance has not yet been traveled.", 0

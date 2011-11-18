@@ -12,7 +12,12 @@ class Demo < SocketConnection
   
   def on_connect()
     super
+    t = Thread.new do
+      @socket.gets
+      @micro.pretend_no_delay = true
+    end
     @micro.run
+    t.kill
     close
   end
 end
