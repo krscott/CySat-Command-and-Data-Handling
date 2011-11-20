@@ -6,6 +6,7 @@ class Microprocessor < PseudoCodeScript
     super(*a)
     
     default_values do
+      unhook_all()
       @power = :normal
       @temp = :normal
       @footprint_elapsed = false
@@ -27,8 +28,12 @@ class Microprocessor < PseudoCodeScript
     
     add_scenario "footprint elapsed during transmission" do
       @rx = :downlink
-      @downlink_window = 1
-      @footprint_elapsed_during_transmission = true
+      @downlink_window = 2
+      @elapse_during_transmission = true
+      
+      hook :footprint_elapsed do
+        @footprint_elapsed = (@elapse_during_transmission and @downlink_window==1)
+      end
     end
     
     add_scenario "transmission completion" do
@@ -57,7 +62,6 @@ class Microprocessor < PseudoCodeScript
     out_puts "Written by Kristoffer Scott"
     out_puts "2011 ISU Cysat Team"
     out_puts ""
-    out_puts "Press ENTER to dump all text and exit."
     pretend "", 3
     out_puts ""
   end
@@ -97,9 +101,8 @@ class Microprocessor < PseudoCodeScript
   end
   
   def footprint_elapsed
-    if @footprint_elapsed or (@footprint_elapsed_during_transmission and @transmitting)
+    if @footprint_elapsed
       pretend "Payload footprint distance has been traveled.", 0
-      @footprint_elapsed_during_transmission = false
       return true
     else
       pretend "Payload footprint distance has not yet been traveled.", 0
@@ -147,6 +150,14 @@ class Microprocessor < PseudoCodeScript
     pretend "Interpreting message"
     pretend "Parsed message from ground: \"#{@rx}\"", 0
     return @rx
+  end
+  
+  def pause_transmission()
+    pretend "There is an interruption. Pausing transmission.", 0
+  end
+  
+  def resume_transmission()
+    pretend "Resuming transmission.", 0
   end
   
   def transmission_loop

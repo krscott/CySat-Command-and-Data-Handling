@@ -20,7 +20,9 @@ class Microprocessor
       end
       # Payload has highest priority, so if collect payload data if needed
       if footprint_elapsed
+        pause_transmission
         collect_payload_data()
+        resume_transmission
       end
       send_message @data.first
       # Check if ground has acknowledged message (Are we still in range?)
@@ -73,5 +75,7 @@ class Microprocessor
 end
 
 if $0 == __FILE__
-  Microprocessor.new.run
+  up = Microprocessor.new
+  up.delay_off
+  up.run
 end

@@ -16,6 +16,7 @@ class Demo < SocketConnection
       @socket.gets
       @micro.pretend_no_delay = true
     end
+    sputs "Press ENTER to dump all text and exit."
     @micro.run
     t.kill
     close

@@ -1,5 +1,7 @@
+require_relative "hooks.rb"
 
 class PseudoCodeScript
+  include Hooks
   
   class Scenario
     def self.default(&b)
@@ -128,6 +130,14 @@ class PseudoCodeScript
   end
   
   def credits()
+  end
+  
+  def delay_off()
+    @pretend_no_delay = true
+  end
+  
+  def delay_on()
+    @pretend_no_delay = false
   end
 
   #def method_missing?(m)
