@@ -10,7 +10,7 @@ class SocketConnection
   end
   
   def sputs(str)
-    socket.puts str.to_s unless socket.closed? or @closed
+    socket.puts str.to_s+"\r" unless socket.closed? or @closed
   end
   def sprint(str)
     socket.print str.to_s unless socket.closed? or @closed
