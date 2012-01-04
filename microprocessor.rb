@@ -54,9 +54,9 @@ class Microprocessor < PseudoCodeScript
       @power = :low
     end
     
-    add_scenario "low temp" do
-      @temp = :low
-    end
+    #add_scenario "low temp" do
+    #  @temp = :low
+    #end
   end
   
   attr_reader :power, :temp
@@ -84,7 +84,7 @@ class Microprocessor < PseudoCodeScript
   end
   
   def allocate_storage_space
-    Fifo.new(self, "Data storage")
+    Queue.new(self, "Data storage")
   end
   
   def check_power
@@ -211,7 +211,7 @@ class Microprocessor < PseudoCodeScript
   end
 end
 
-class Fifo
+class Queue
   def initialize(parent, name = nil)
     super()
     @parent = parent
