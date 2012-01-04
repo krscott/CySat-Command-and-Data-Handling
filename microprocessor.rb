@@ -12,9 +12,14 @@ class Microprocessor < PseudoCodeScript
       @footprint_elapsed = false
       @rx = nil
       @downlink_window = 10
+      @no_recent_contact = false
     end
     
     add_scenario "normal operation" do
+    end
+    
+    add_scenario "no contact from ground for a while" do
+      @no_recent_contact = true
     end
     
     add_scenario "footprint elapsed" do
@@ -98,6 +103,20 @@ class Microprocessor < PseudoCodeScript
   
   def wait_low_power
     pretend "Waiting in low-power state", 3
+  end
+  
+  def no_recent_contact
+    if !@rx.nil?
+      @no_recent_contact = false
+    end
+    if @no_recent_contact
+      pretend "Contact has not been established recently."
+    end
+    return @no_recent_contact
+  end
+  
+  def transmit_beacon_signal
+    pretend "Transmitting beacon signal", 3
   end
   
   def footprint_elapsed
